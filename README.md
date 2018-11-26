@@ -12,8 +12,7 @@ Try to deploy web service on HTTPS
 ### 1. Issue credential file to GKE cluster 
 [Please Read Official Page](https://cloud.google.com/sql/docs/container-engine-connect?hl=ja)
 ### 2. Get static global ip from GCE
-You can get static GIP by using kubernetes-ingress from key  
-{RUN THIS COMMAND}  
+You can get static GIP by using kubernetes-ingress from key   
 `gcloud compute addresses create kubernetes-ingress --global`
 ### 3. Make Domain
 1. Set static GIP on A Record of Google Cloud DNS
@@ -22,9 +21,9 @@ You can get static GIP by using kubernetes-ingress from key
 add Routhing `/` path which return status 200
 > Ingree check server's status to ping `/` path everytime.  
 ### Finally RUN THIS COMMAND
-1. First RUN 
+1. First RUN   
 `kubectl create -f {yaml file}`
-2. Second RUN
+2. Second RUN  
 `kubectl apply -f {yaml file}`
 EOF
 ## Reference
