@@ -21,7 +21,11 @@ You can get static GIP by using kubernetes-ingress from key
 ### 4. Set `/` path on your api server for Healthcheck
 add Routhing `/` path which return status 200
 > Ingree check server's status to ping `/` path everytime.  
-
+### Finally RUN THIS COMMAND
+1. First RUN 
+`kubectl create -f {yaml file}`
+2. Second RUN
+`kubectl apply -f {yaml file}`
 EOF
 ## Reference
 - [GKE でサービスを HTTPS と HTTP/2 に対応する(kube-lego 編)](https://qiita.com/apstndb/items/2fef0a80d4510516cb1f)
