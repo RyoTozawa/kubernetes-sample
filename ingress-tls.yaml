@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {Pod Name} #example -> name: test
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "gce"
+spec:
+  tls:
+  - secretName: kubernetes-ingress-tls
+  - hosts:
+    - {Domain Name}
+  rules:
+  - host: {Domain Name}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {Pod Name} #example -> test
+          servicePort: 80
+  backend:
+    serviceName: {Pod Name} #example -> test
+    servicePort: 80

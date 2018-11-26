@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+#Labels can be used to select objects and to find collections of objects that satisfy certain conditions
+metadata: 
+  name: {Pod Name} #example -> name: test
+spec:
+  # レプリカ数の指定
+  replicas: {Set Number of Replication} #example -> 2
+  template:
+    metadata:
+      # Set label Key/Value
+      labels:
+        app: {Pod Name} #example -> app: test
+    spec:
+      # Similar to Docker-Compose
+      containers:
+        - name: {Container Name} #example -> api
+          image: {Container Image Name} #example -> gcr.io/{project-name}/github.com/{repository}/{image}
+          ports:
+            - containerPort: {Port Number} #example -> 9001
+          env:
+            - name: SQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: username
+            - name: SQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: password
+        # Cloud SQL Proxy supply connection to Cloud SQL to bind 127.0.0.1:3306 to it
+        - name: cloudsql-proxy
+          image: b.gcr.io/cloudsql-docker/gce-proxy:latest
+          command: ["/cloud_sql_proxy", "--dir=/cloudsql",
+                    "-instances={Cloud SQL Instance Name}=tcp:0.0.0.0:3306",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-oauth-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: cloudsql
+              mountPath: /cloudsql
+      volumes:
+        - name: cloudsql-oauth-credentials
+          secret:
+            secretName: cloudsql-oauth-credentials
+        - name: cloudsql
+          emptyDir: 
